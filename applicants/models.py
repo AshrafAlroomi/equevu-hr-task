@@ -10,10 +10,17 @@ class Department(models.Model):
         ('FIN', 'Finance'),
     ]
 
-    name = models.CharField(max_length=3, choices=DEPARTMENT_CHOICES, unique=True)
+    code = models.CharField(max_length=3, choices=DEPARTMENT_CHOICES, unique=True)
 
     def __str__(self):
-        return f"<{self.name}>"
+        return f"<{self.code}: {self.name}>"
+
+    @property
+    def name(self):
+        for code, name in self.DEPARTMENT_CHOICES:
+            if code == self.code:
+                return name
+        return None
 
 
 class Candidate(models.Model):

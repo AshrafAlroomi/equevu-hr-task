@@ -3,13 +3,15 @@ from applicants.models import Department, Candidate
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField()
+
     class Meta:
         model = Department
-        fields = ['name']
+        fields = ['name', 'code']
 
 
 class CandidateSerializer(serializers.ModelSerializer):
-    department = serializers.SlugRelatedField(slug_field='name', queryset=Department.objects.all())
+    department = serializers.SlugRelatedField(slug_field='code', queryset=Department.objects.all())
     years_of_experience = serializers.ReadOnlyField()
 
     class Meta:

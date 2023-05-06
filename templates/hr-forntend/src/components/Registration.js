@@ -104,7 +104,7 @@ const Registration = () => {
                                   required>
                         <option value="">Select a department</option>
                         {departments.map((dept) => (
-                            <option key={dept.id} value={dept.id}>
+                            <option key={dept.code} value={dept.code}>
                                 {dept.name}
                             </option>
                         ))}

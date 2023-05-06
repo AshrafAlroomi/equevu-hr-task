@@ -10,9 +10,9 @@ const CandidateList = () => {
         fetchCandidates().then(r => console.log("Fetched"));
     }, []);
 
-    const handleDownloadResume = async (id) => {
+    const handleDownloadResume = async (candidate) => {
         try {
-            const response = await axios.get(`${baseUrl}/candidates/${id}/resume/`, {
+            const response = await axios.get(`${baseUrl}/candidates/${candidate.id}/resume/`, {
                 responseType: 'blob',
                 headers: {
                     'X-ADMIN': '1',
@@ -20,8 +20,13 @@ const CandidateList = () => {
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
+
+            const splitFile = candidate.resume.split('.')
+            const fileExtension = splitFile[splitFile.length - 1];
+            const fileName = `resume_${candidate.id}.${fileExtension}`
+
             link.href = url;
-            link.setAttribute('download', `resume_${id}`);
+            link.setAttribute('download', fileName);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
@@ -69,7 +74,7 @@ const CandidateList = () => {
                         <td>
                             <Button
                                 variant="primary"
-                                onClick={() => handleDownloadResume(candidate.id)}>
+                                onClick={() => handleDownloadResume(candidate)}>
                                 Download Resume
                             </Button>
                         </td>
